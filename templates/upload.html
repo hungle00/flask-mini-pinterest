@@ -1,0 +1,23 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="card" style="margin: 1em 0; padding: 1em 0 0 0; align-items: center;">
+        <h3>Upload new File</h3>
+        <div class="form-group">
+            <form method="post" action="/upload-photos" 
+                enctype="multipart/form-data">
+                <div style="display: flex;">
+                    <input type="file" accept=".png, .jpeg, .jpg, .gif" name="photos" multiple class="form-control" style="margin-right: 1em;">
+                    <input type="submit" class="btn btn-primary">
+                </div>
+            </form>
+        </div> 
+    </div> 
+    <div style='display: flex; justify-content: space-between; flex-wrap: wrap;'>
+        {% for image in images %}
+            <img src='{{ image }}' width='auto' height='300' style='margin: 0.5em 0;'/>
+        {% endfor %}
+    </div>   
+</div> 
+{% endblock %}
