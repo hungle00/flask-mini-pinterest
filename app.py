@@ -1,15 +1,17 @@
 import os
 from datetime import datetime
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, flash, redirect, url_for, session
 from flask_sqlalchemy import SQLAlchemy
+from werkzeug.security import generate_password_hash, check_password_hash
 from azure.storage.blob import BlobServiceClient
 
 from models import db, User, Pin
 import storage
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
+# load config from the config file we created earlier 
+app.config.from_object('config')
+
 
 db.init_app(app)
 db.create_all(app=app)
@@ -20,6 +22,68 @@ def index():
    images = list(reversed(Pin.query.all()))
    return render_template('index.html', images=images)
 
+
+#####  AUTHENTICATION #####
+
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
+    if request.method == 'POST':
+
+        # get the user details from the form
+        email = request.form['email']
+        username = request.form['username']
+        password = request.form['password']
+
+        # hash the password
+        password = generate_password_hash(password)
+
+        user = User(email=email, username=username, password=password)
+
+        db.session.add(user)
+        db.session.commit()
+
+        flash('Thanks for signing up please login')
+
+        return redirect(url_for('index'))
+
+    return render_template('signup.html')
+
+
+@app.route('/login', methods=['POST'])
+def login():
+
+    username = request.form['username']
+    password = request.form['password']
+
+    # search the database for the User
+    user = User.query.filter_by(username=username).first()
+
+    if user:
+        password_hash = user.password
+
+        if check_password_hash(password_hash, password):
+            # The hash matches the password in the database log the user in
+            session['user'] = username
+
+            flash('Login was succesfull')
+    else:
+        # user wasn't found in the database
+        flash('Username or password is incorrect please try again', 'error')
+
+    return redirect(request.args.get('next') or url_for('index'))
+
+
+@app.route('/logout')
+def logout():
+    if 'user' in session:
+        session.pop('user')
+
+        flash('We hope to see you again!')
+
+    return redirect(url_for('index'))
+
+
+##### CRUD PINS #####
 
 @app.route('/newimage', methods=['POST'])
 def post_image():
@@ -35,13 +99,14 @@ def post_image():
     else:
         return redirect(url_for('index'))
 
+
+##### UPLOAD PHOTOS  ######
+
 @app.route("/upload")
 def photos():
    images = storage.get_blob_items()
    return render_template('upload.html', images=images)
 
-
-#flask endpoint to upload a photo
 @app.route("/upload-photos", methods=["POST"])
 def upload_photos():
     filenames = ""
@@ -55,6 +120,7 @@ def upload_photos():
             print("Ignoring duplicate filenames") # ignore duplicate filenames
         
     return redirect('/upload')
+
 
 if __name__ == '__main__':
    app.run()
