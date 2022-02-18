@@ -129,3 +129,7 @@ dmypy.json
 .pyre/
 
 pin.db
+pin.db-journal
+
+#PyCharm Config
+.idea
