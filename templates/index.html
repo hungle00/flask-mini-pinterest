@@ -43,11 +43,13 @@
       </p>
     </div>
 
-    <div class="mx-5" style='display: flex; justify-content: space-between;'>
-      {% for image in images %}
-        <img src='{{ image["image"] }}' width='auto' height='300' style='margin: 0.5em 0;'/>
-      {% endfor %}
-    </div>  
-  {% endif %} 
+    {% endif %} 
+
+  <div class="mx-5" style='display: flex; justify-content: space-between;'>
+    {% for image in images %}
+      <img src='{{ image["image_url"] }}' width='auto' height='300' style='margin: 0.5em 0;'/>
+    {% endfor %}
+  </div>
+  
 </main>      
 {% endblock %}
