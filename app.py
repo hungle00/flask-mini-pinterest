@@ -3,7 +3,8 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from functools import wraps
 
 from models import db, User, Pin
-import storage
+from azures.storage import BlobStorage
+blob_storage = BlobStorage()
 
 app = Flask(__name__)
 # load config from the config file we created earlier 
@@ -141,19 +142,17 @@ def delete_image(pin_id):
 @app.route("/upload")
 @login_required
 def photos():
-    images = storage.get_blob_items()
+    images = blob_storage.get_blob_items()
     return render_template('upload.html', images=images)
-
 
 @app.route("/upload-photos", methods=["POST"])
 @login_required
 def upload_photos():
-    filenames = ""
-
     for file in request.files.getlist("photos"):
         try:
-            storage.upload_blob(file)  # upload the file to the container using the filename as the blob name
-            filenames += file.filename + "<br /> "
+            blob_storage.upload_blob(file) # upload the file to the container using the filename as the blob name
+            file_name = blob_storage.image_url(file)
+            print(file_name)
         except Exception as e:
             print(e)
             print("Ignoring duplicate filenames")  # ignore duplicate filenames
