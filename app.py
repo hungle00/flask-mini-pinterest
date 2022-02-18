@@ -1,9 +1,6 @@
-import os
-from datetime import datetime
 from flask import Flask, render_template, request, flash, redirect, url_for, session
-from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
-from azure.storage.blob import BlobServiceClient
+from functools import wraps
 
 from models import db, User, Pin
 import storage
@@ -11,7 +8,6 @@ import storage
 app = Flask(__name__)
 # load config from the config file we created earlier 
 app.config.from_object('config')
-
 
 db.init_app(app)
 db.create_all(app=app)
@@ -22,8 +18,15 @@ def index():
    images = list(reversed(Pin.query.all()))
    return render_template('index.html', images=images)
 
-
 #####  AUTHENTICATION #####
+# Login Decorator
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'user' in session:
+            return f(*args, **kwargs)
+        return redirect(url_for('index'))
+    return decorated_function
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
@@ -36,12 +39,12 @@ def signup():
 
         # hash the password
         password = generate_password_hash(password)
-
         user = User(email=email, username=username, password=password)
 
         db.session.add(user)
         db.session.commit()
 
+        session['user'] = username
         flash('Thanks for signing up please login')
 
         return redirect(url_for('index'))
@@ -51,7 +54,6 @@ def signup():
 
 @app.route('/login', methods=['POST'])
 def login():
-
     username = request.form['username']
     password = request.form['password']
 
@@ -64,7 +66,6 @@ def login():
         if check_password_hash(password_hash, password):
             # The hash matches the password in the database log the user in
             session['user'] = username
-
             flash('Login was succesfull')
     else:
         # user wasn't found in the database
@@ -84,15 +85,15 @@ def logout():
 
 
 ##### CRUD PINS #####
-
 @app.route('/newimage', methods=['POST'])
+@login_required
 def post_image():
     #nickname = current_user.nickname
     image_url = request.form.get('image_url')
     image_text = request.form.get('image_text')
 
     if image_url and image_text:
-        new_pin = Pin(text=image_text, image=image_url)
+        new_pin = Pin(title=image_text, image_url=image_url)
         db.session.add(new_pin)
         db.session.commit()
         return render_template('newpin.html', new_pin = new_pin)
@@ -101,13 +102,14 @@ def post_image():
 
 
 ##### UPLOAD PHOTOS  ######
-
 @app.route("/upload")
+@login_required
 def photos():
    images = storage.get_blob_items()
    return render_template('upload.html', images=images)
 
 @app.route("/upload-photos", methods=["POST"])
+@login_required
 def upload_photos():
     filenames = ""
 
