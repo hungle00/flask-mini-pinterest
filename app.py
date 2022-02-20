@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, flash, redirect, url_for, session
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask_migrate import Migrate
 from functools import wraps
 
 from models import db, User, Pin
@@ -11,7 +12,8 @@ app = Flask(__name__)
 app.config.from_object('config')
 
 db.init_app(app)
-db.create_all(app=app)
+migrate = Migrate(app, db)
+#db.create_all(app=app)
 
 
 @app.route('/')
