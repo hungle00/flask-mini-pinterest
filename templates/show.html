@@ -1,0 +1,30 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<main>
+    <div>
+        <div class="px-4 py-3 my-2 text-center">
+            <i class="fa-solid fa-heart"></i>
+            <img class="d-block mx-auto mb-4" src='{{ this_pin["image_url"] }}' width="350" height="auto"/>
+            <h2 class="display-6 fw-bold">{{ this_pin["title"] }}</h2>
+            <a href="{{ url_for('index') }}" class="btn btn-primary btn-lg px-4 gap-3">Back home</a>
+            <button type="button" class="btn btn-danger"><a href="/delete/{{this_pin.id}}">Delete a pin</a></button>
+        </div>
+        <form>
+            <div class="col-md-6 mx-auto text-center">
+                <label for="name" class="form-label fw-bold fs-5">Edit image title</label>
+                <div class="d-grid gap-2 d-sm-flex justify-content-sm-center align-items-center my-1">
+                  <input type="text" class="form-control" name="new_title" placeholder="New Title" />
+                </div>
+                <div class="d-grid gap-2 d-sm-flex justify-content-sm-center my-2">
+                    <button type="submit" class="btn btn-primary btn-lg px-4 gap-3"><i class="fa-solid fa-pen-fancy"></i>Submit</button>
+                    <a href="{{ url_for('index') }}" type="button" class="btn btn-danger">Cancel</a>
+                </div>
+            </div>
+        </form>
+
+
+    </div>
+
+</main>
+{% endblock %}

@@ -21,23 +21,10 @@
       </div>
     </form>
   {% else %}
-    <form action="/newimage" method="POST">
-      <div class="col-md-6 mx-auto text-center">
-        <label for="name" class="form-label fw-bold fs-5">Pin your image</label>
-        <div class="d-grid gap-2 d-sm-flex justify-content-sm-center align-items-center my-1">
-          <input type="text" class="form-control" name="image_url" placeholder="Image URL" />
-        </div>
-        <div class="d-grid gap-2 d-sm-flex justify-content-sm-center align-items-center my-1">
-          <input type="text" class="form-control" name="image_text" placeholder="Text" />
-        </div>
-        <div class="d-grid gap-2 d-sm-flex justify-content-sm-center my-2">
-          <button type="submit" class="btn btn-primary btn-lg px-4 gap-3">Add image</button>
-        </div>
-      </div>
-    </form>
 
     <div class="px-4 py-3 my-4 text-center">
       <p class="fw-bold text-primary">
+        <a href="{{ url_for('new') }}" class="btn btn-primary btn-sm px-4 gap-3">New Pin</a>
         Or you can
         <a href="{{ url_for('photos') }}" class="btn btn-primary btn-sm px-4 gap-3">Upload images</a>
       </p>
@@ -45,11 +32,22 @@
 
     {% endif %} 
 
-  <div class="mx-5" style='display: flex; justify-content: space-between;'>
-    {% for image in images %}
+
+  <div class="mx-5" style='display: flex; justify-content: start;'>
+  {% for image in images %}
+    <div class="image">
       <img src='{{ image["image_url"] }}' width='auto' height='300' style='margin: 0.5em 0;'/>
-    {% endfor %}
+      <p>
+
+        <b>{{ image['title'] }}</b>
+      </p>
+      <button type="button" class="btn btn-info"><a href="{{url_for('get_image', pin_id=image.id)}}">Show pin</a></button>
+    </div>
+
+  {% endfor %}
   </div>
+
+
   
 </main>      
 {% endblock %}
