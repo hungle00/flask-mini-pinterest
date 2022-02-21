@@ -117,18 +117,18 @@ def get_image(pin_id):
     return render_template('show.html', this_pin=this_pin)
 
 
-@app.route('pins/<int:pin_id>/update', methods=['GET', 'POST'])
+@app.route('/pins/<int:pin_id>/update', methods=['POST'])
 @login_required
 def update_image(pin_id):
     this_pin = Pin.query.get(pin_id)
     if request.method == 'POST':
-        if this_pin:
-            new_title = request.form['new_title']
-            this_pin = Pin(id=pin_id, title=new_title, image_url=this_pin.image_url)
-            db.session.add(this_pin)
+        try:
+            new_title = request.form.get("new_title")
+            this_pin.title = new_title
             db.session.commit()
+        except Exception as e:
+            print(e)
             return redirect(f'/pins/{pin_id}')
-        return f"Pin does not existed"
     return render_template('show.html', this_pin=this_pin)
 
 

@@ -10,7 +10,7 @@
             <a href="{{ url_for('index') }}" class="btn btn-primary btn-lg px-4 gap-3">Back home</a>
             <button type="button" class="btn btn-danger"><a href="/delete/{{this_pin.id}}">Delete a pin</a></button>
         </div>
-        <form>
+        <form action='/pins/{{ this_pin.id}}/update' method="POST">
             <div class="col-md-6 mx-auto text-center">
                 <label for="name" class="form-label fw-bold fs-5">Edit image title</label>
                 <div class="d-grid gap-2 d-sm-flex justify-content-sm-center align-items-center my-1">
