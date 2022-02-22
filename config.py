@@ -1,4 +1,6 @@
 import os
+from dotenv import load_dotenv
+load_dotenv()
 
 DB_PATH = os.path.join(os.path.dirname(__file__), 'pin.db')
 SECRET_KEY = 'development key' # keep this key secret during production

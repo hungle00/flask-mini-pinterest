@@ -30,6 +30,11 @@ def login_required(f):
         return redirect(url_for('index'))
     return decorated_function
 
+def current_user():
+    username = session['user']
+    user = User.query.filter_by(username=username).first()
+    return user
+
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     if request.method == 'POST':
@@ -87,8 +92,9 @@ def logout():
 
 ##### CRUD PINS #####
 @app.route('/pins/new')
+@login_required
 def new():
-    return render_template('new.html')
+    return render_template('newpin.html')
 
 
 @app.route('/pins', methods=['POST'])
@@ -99,7 +105,7 @@ def post_image():
     image_text = request.form.get('image_text')
 
     if user_name and image_url and image_text:
-        this_pin = Pin(title=image_text, image_url=image_url)
+        this_pin = Pin(title=image_text, image_url=image_url, pin_by=current_user())
         db.session.add(this_pin)
         db.session.commit()
         # return render_template('show.html', this_pin=this_pin)
@@ -151,8 +157,10 @@ def upload_photos():
     for file in request.files.getlist("photos"):
         try:
             blob_storage.upload_blob(file) # upload the file to the container using the filename as the blob name
-            file_name = blob_storage.image_url(file)
-            print(file_name)
+            file_url = blob_storage.image_url(file)
+            new_pin = Pin(title='Upload file', image_url=file_url, pin_by=current_user())
+            db.session.add(new_pin)
+            db.session.commit()
         except Exception as e:
             print(e)
             print("Ignoring duplicate filenames")  # ignore duplicate filenames
