@@ -12,11 +12,12 @@ app.config.from_object('config')
 db.init_app(app)
 db.create_all(app=app)
 
+
 @app.route('/')
 def index():
-   print('Request for index page received')
-   images = list(reversed(Pin.query.all()))
-   return render_template('index.html', images=images)
+    print('Request for index page received')
+    images = list(reversed(Pin.query.all()))
+    return render_template('index.html', images=images)
 
 #####  AUTHENTICATION #####
 # Login Decorator
@@ -31,7 +32,6 @@ def login_required(f):
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     if request.method == 'POST':
-
         # get the user details from the form
         email = request.form['email']
         username = request.form['username']
@@ -85,28 +85,65 @@ def logout():
 
 
 ##### CRUD PINS #####
-@app.route('/newimage', methods=['POST'])
+@app.route('/pins/new')
+def new():
+    return render_template('new.html')
+
+
+@app.route('/pins', methods=['POST'])
 @login_required
 def post_image():
-    #nickname = current_user.nickname
+    user_name = session['user']
     image_url = request.form.get('image_url')
     image_text = request.form.get('image_text')
 
-    if image_url and image_text:
-        new_pin = Pin(title=image_text, image_url=image_url)
-        db.session.add(new_pin)
+    if user_name and image_url and image_text:
+        this_pin = Pin(title=image_text, image_url=image_url)
+        db.session.add(this_pin)
         db.session.commit()
-        return render_template('newpin.html', new_pin = new_pin)
+        # return render_template('show.html', this_pin=this_pin)
+        return redirect(f'/pins/{this_pin.id}')
     else:
         return redirect(url_for('index'))
+
+
+@app.route('/pins/<int:pin_id>', methods=['GET'])
+def get_image(pin_id):
+    this_pin = Pin.query.get(pin_id)
+    # print(this_pin)
+    return render_template('show.html', this_pin=this_pin)
+
+
+@app.route('/pins/<int:pin_id>', methods=['POST'])
+@login_required
+def update_image(pin_id):
+    this_pin = Pin.query.get(pin_id)
+    try:
+        new_title = request.form.get("new_title")
+        this_pin.title = new_title
+        db.session.commit()
+    except Exception as e:
+        print(e)
+        return redirect(f'/pins/{pin_id}')
+    return render_template('show.html', this_pin=this_pin)
+
+
+@app.route('/delete/<int:pin_id>')
+@login_required
+def delete_image(pin_id):
+    this_pin = Pin.query.get(pin_id)
+    db.session.delete(this_pin)
+    db.session.commit()
+    return redirect(url_for('index'))
 
 
 ##### UPLOAD PHOTOS  ######
 @app.route("/upload")
 @login_required
 def photos():
-   images = storage.get_blob_items()
-   return render_template('upload.html', images=images)
+    images = storage.get_blob_items()
+    return render_template('upload.html', images=images)
+
 
 @app.route("/upload-photos", methods=["POST"])
 @login_required
@@ -115,14 +152,14 @@ def upload_photos():
 
     for file in request.files.getlist("photos"):
         try:
-            storage.upload_blob(file) # upload the file to the container using the filename as the blob name
+            storage.upload_blob(file)  # upload the file to the container using the filename as the blob name
             filenames += file.filename + "<br /> "
         except Exception as e:
             print(e)
-            print("Ignoring duplicate filenames") # ignore duplicate filenames
-        
+            print("Ignoring duplicate filenames")  # ignore duplicate filenames
+
     return redirect('/upload')
 
 
 if __name__ == '__main__':
-   app.run()
+    app.run()
