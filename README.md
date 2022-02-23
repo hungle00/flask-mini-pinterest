@@ -9,7 +9,9 @@ source .venv/bin/activate
 pip install -r requirements.txt
 export FLASK_APP=app.py
 export FLASK_ENV=development
-export AZURE_STORAGE_CONNECTION_STRING="your-key"
+```
+Rename .env.example to .env and put your key.
+```
 flask run
 ```
 

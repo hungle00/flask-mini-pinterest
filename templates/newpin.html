@@ -1,11 +1,36 @@
 {% extends 'layout.html' %}
 
 {% block content %}
-<main>
-  <div class="px-4 py-3 my-2 text-center">
-      <img class="d-block mx-auto mb-4" src='{{ new_pin["image_url"] }}' width="350" height="auto"/>
-      <h2 class="display-6 fw-bold">{{ new_pin["title"] }}</h2>
-      <a href="{{ url_for('index') }}" class="btn btn-primary btn-lg px-4 gap-3">Back home</a>
-  </div>
-</main>   
+<main class="container">
+   <form action="/pins" method="POST">
+      <div class="col-md-6 mx-auto text-center">
+        <label for="name" class="form-label fw-bold fs-5">Pin your image</label>
+        <div class="d-grid gap-2 d-sm-flex justify-content-sm-center align-items-center my-1">
+          <input type="text" class="form-control" name="image_url" placeholder="Image URL" />
+        </div>
+        <div class="d-grid gap-2 d-sm-flex justify-content-sm-center align-items-center my-1">
+          <input type="text" class="form-control" name="image_text" placeholder="Text" />
+        </div>
+        <div class="d-grid gap-2 d-sm-flex justify-content-sm-center my-2">
+          <button type="submit" class="btn btn-primary btn-lg px-4 gap-3">Add image</button>
+        </div>
+      </div>
+    </form>
+    <hr>
+    <p class="fw-bold text-primary text-center">
+      Or you can
+    </p>
+    <div class="card" style="margin: 1em 0; padding: 1em 0 0 0; align-items: center;">
+      <h3>Upload new File</h3>
+      <div class="form-group">
+          <form method="post" action="/upload-photos" 
+              enctype="multipart/form-data">
+              <div style="display: flex;">
+                  <input type="file" accept=".png, .jpeg, .jpg, .gif" name="photos" multiple class="form-control" style="margin-right: 1em;">
+                  <input type="submit" class="btn btn-primary">
+              </div>
+          </form>
+      </div> 
+  </div> 
+</main>
 {% endblock %}
