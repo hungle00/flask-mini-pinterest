@@ -21,7 +21,7 @@ class AzureComputerVision:
     # Describe an Image - remote
     def description_image(self):
         description_results = self.computervision_client.describe_image(self.image_url)
-        return description_results.captions
+        return description_results
 
     # Categorize an Image - remote
     def categorize_image(self, image_features):
@@ -42,6 +42,6 @@ print("===== Describe an image - remote =====")
 #    print(caption)
 
 print("===== Categorize an image - remote =====")
-remote_image_features = ["categories"]
-for category in azure_cv.categorize_image(remote_image_features):
-    print(category)
+# remote_image_features = ["categories"]
+# for category in azure_cv.categorize_image(remote_image_features):
+#     print(category)

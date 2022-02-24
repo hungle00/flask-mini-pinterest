@@ -7,7 +7,17 @@
         <div class="col-5">
             <div class="px-4 py-3 my-2 text-center">
                 <img class="d-block mx-auto mb-4" src='{{ this_pin["image_url"] }}' width="350" height="auto"/>
-                <h2 class="display-6 fw-bold">{{ this_pin["title"] }}</h2>
+                {% if this_pin["title"] %}
+                    <h3 class="display-8 fw-bold">{{ this_pin["title"] }}</h3>
+                {% else %}
+                    <h3 class="display-8 fw-bold">{{ pin_detail["caption"] }}</h3>
+                {% endif %}
+                <div class="my-4">
+                  {% for tag in pin_detail["tags"] %}
+                    <p class="d-inline btn btn-sm btn-outline-primary">{{ tag }}</p>
+                  {% endfor %}
+                </div>
+                <a href="{{ url_for('index') }}" class="btn btn-primary btn-lg px-4 gap-3">Back home</a>
             </div>
             {% if session.get('user') %}
             <form action='/pins/{{ this_pin.id}}' method="POST">

@@ -1,4 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.dialects import postgresql
 
 db = SQLAlchemy()
 
@@ -27,8 +28,15 @@ class Pin(Base):
     pin_by = db.relationship('User', backref=db.backref('pins', lazy='dynamic'))
 
     def __repr__(self):
-        return '<Pin {}>'.format(self.title)
+        return '<Pin {}>'.format(self.image_url)
 
+    def to_json(self):
+        return {
+                'title': self.title,
+                'image_url': self.image_url,
+                'pin_by': self.pin_by,
+                'pin_detail': self.pin_detail.first(),
+            }
 
 class Vote(Base):
     pin_id = db.Column(db.Integer, db.ForeignKey('pin.id'))
@@ -37,3 +45,14 @@ class Vote(Base):
                              backref=db.backref('voted_on_by', lazy='dynamic'))
     users = db.relationship('User', foreign_keys=[user_id],
                             backref=db.backref('voted_on', lazy='dynamic'))
+
+class PinDetail(Base):
+    id = db.Column(db.Integer, primary_key=True)
+    pin_id = db.Column(db.Integer, db.ForeignKey('pin.id'))
+    caption = db.Column(db.String(140))
+    tags = db.Column(postgresql.ARRAY(db.String))
+    pin = db.relationship('Pin', foreign_keys=[pin_id],
+                        backref=db.backref('pin_detail', lazy='dynamic'))
+
+    def __repr__(self):
+        return '<PinDetail {}>'.format(self.pin.image_url)

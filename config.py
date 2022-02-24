@@ -8,7 +8,6 @@ if os.getenv('FLASK_ENV') == 'development':
     SQLALCHEMY_DATABASE_URI = 'sqlite:///{}'.format(DB_PATH) # development
 else:
     SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL')     # production
-    
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 DEBUG = True
 AZURE_STORAGE_CONNECTION_STRING = os.getenv('AZURE_STORAGE_CONNECTION_STRING')
