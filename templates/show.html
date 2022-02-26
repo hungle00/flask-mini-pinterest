@@ -1,8 +1,30 @@
 {% extends 'layout.html' %}
 
 {% block content %}
+<script type="module">
+    import { Application, Controller } from "https://unpkg.com/@hotwired/stimulus/dist/stimulus.js"
+    window.Stimulus = Application.start()
+
+    Stimulus.register("tag", class extends Controller {
+      static targets = [ "name" ]
+
+      connect() {
+        console.log('hello world')
+      }
+
+      show(event) {
+        const tag = event.target.innerHTML
+        fetch(`http://localhost:5000/api/pins?keyword=${tag}`)
+          .then(response => response.json())
+          .then(data => data.forEach(pin => {
+            console.log(pin)  
+          }));
+          //.then(data => this.nameTarget.innerHTML = data)
+      }
+    })
+</script>
 <main>
-    <div class="container">
+    <div class="container" data-controller="tag">
       <div class="row">
         <div class="col-5">
             <div class="px-4 py-3 my-2 text-center">
@@ -14,7 +36,8 @@
                 {% endif %}
                 <div class="my-4">
                   {% for tag in pin_detail["tags"] %}
-                    <p class="d-inline btn btn-sm btn-outline-primary">{{ tag }}</p>
+                    <p class="d-inline mx-1 btn btn-sm btn-outline-primary"
+                    data-action="click->tag#show">{{ tag }}</p>
                   {% endfor %}
                 </div>
                 <a href="{{ url_for('index') }}" class="btn btn-primary btn-lg px-4 gap-3">Back home</a>
@@ -38,7 +61,7 @@
             {% endif %}
         </div>
         <div class="col-7">
-          <div class="mx-2 my-2">
+          <div class="mx-2 my-2" data-tag-target="name">
             <p>Show similar images here</p>
           </div>
         </div>

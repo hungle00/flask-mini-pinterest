@@ -5,11 +5,16 @@ from functools import wraps
 
 from models import db, User, Pin
 from azures.storage import BlobStorage
+from helpers import create_pin_detail, create_pin
 blob_storage = BlobStorage()
+
+# Blueprints
+from api.api import api
 
 app = Flask(__name__)
 # load config from the config file we created earlier 
 app.config.from_object('config')
+app.register_blueprint(api)
 
 db.init_app(app)
 migrate = Migrate(app, db)
@@ -110,9 +115,9 @@ def post_image():
     image_text = request.form.get('image_text')
 
     if user_name and image_url and image_text:
-        this_pin = Pin(title=image_text, image_url=image_url, pin_by=current_user())
-        db.session.add(this_pin)
-        db.session.commit()
+        this_pin = create_pin(image_text, image_url, current_user())
+        if this_pin is not None:
+            create_pin_detail(this_pin.id)
         # return render_template('show.html', this_pin=this_pin)
         return redirect(f'/pins/{this_pin.id}')
     else:
@@ -169,9 +174,7 @@ def upload_photos():
         try:
             blob_storage.upload_blob(file) # upload the file to the container using the filename as the blob name
             file_url = blob_storage.image_url(file)
-            new_pin = Pin(title='Upload file', image_url=file_url, pin_by=current_user())
-            db.session.add(new_pin)
-            db.session.commit()
+            create_pin('', file_url, current_user())
         except Exception as e:
             print(e)
             print("Ignoring duplicate filenames")  # ignore duplicate filenames
