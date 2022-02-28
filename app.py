@@ -144,6 +144,11 @@ def delete_image(pin_id):
     return redirect(url_for('index'))
 
 
+# ##### PROFILE #####
+# @app.route('/profile/<int:user_id>')
+# @login_required
+# def show_profile(user_id):
+
 ##### UPLOAD PHOTOS  ######
 @app.route("/upload")
 @login_required

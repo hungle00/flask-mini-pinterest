@@ -1,15 +1,46 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+<nav class="navbar navbar-expand-sm navbar-light bg-light">
     <div class="container">
-        <a class="navbar-brand" href="/">Photos App</a>
-        <nav>
-            <ul class="navbar-nav">  
+        <a class="navbar-brand" href="/">
+            <b>Photos App</b>
+        </a>
+        <div id="navbarNav">
+            <ul class="nav nav-justified">
+                <li>
+                    <form class="d-flex">
+                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                        <button class="btn btn-outline-success" type="submit">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </button>
+                    </form>
+                </li>
             {% if session.get('user') %}
-                <li class="welcome-message">Hey {{ session['user']}}!</li> | 
-                <li class="navbar-item"><a class="navbar-text" href="{{ url_for('logout') }}">Logout</a></li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="createImageDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">New Image</a>
+                    <ul class="dropdown-menu" aria-labelledby="createImageDropdown">
+                        <li><a href="{{ url_for('new') }}" class="dropdown-item">New Pin</a></li>
+                        <li><a href="{{ url_for('photos') }}" class="dropdown-item">Upload Images</a></li>
+                    </ul>
+                </li>
+            {% endif %}
+
+            {% if session.get('user') %}
+                <li class="welcome-message">Hey {{ session['user']}}!</li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="menuDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fa-solid fa-list-ul"></i>
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="menuDropdown">
+                        <li><a href="#" class="dropdown-item">Profile</a></li>
+                        <li><a href="{{ url_for('logout') }}" class="dropdown-item">Logout</a></li>
+                    </ul>
+                </li>
+
             {% else %}
-                <li class="navbar-item"><a class="navbar-text" href="{{ url_for('signup') }}">Signup</a></li>
+                <li class="navbar-item"><a class="btn btn-info" href="{{ url_for('login') }}">Login</a></li>
+                <li class="navbar-item"><a class="btn btn-primary" href="{{ url_for('signup') }}">Signup</a></li>
             {% endif %}  
             </ul>
-        </nav>
+        </div>
     </div>
 </nav>
