@@ -7,5 +7,6 @@ def api_pins():
     from helpers import search_tag
     keyword = request.args.get("keyword")
 
-    results = search_tag(keyword)
-    return jsonify(results)
+    pins = search_tag(keyword)
+    pins_json = [pin.to_json() for pin in pins]
+    return jsonify(pins_json)

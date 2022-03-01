@@ -13,20 +13,35 @@
       }
 
       show(event) {
-        const tag = event.target.innerHTML
+        const tag = event.target.innerHTML;
+        const all_pin = document.createElement("div");
+        all_pin.classList.add('row');
         fetch(`http://localhost:5000/api/pins?keyword=${tag}`)
           .then(response => response.json())
           .then(data => data.forEach(pin => {
-            console.log(pin)  
-          }));
-          //.then(data => this.nameTarget.innerHTML = data)
+            console.log(pin["image_url"], pin["pin_by"], pin["title"])  
+            all_pin.insertAdjacentHTML('beforeend', this.display_pin(pin))
+          }))
+          this.nameTarget.innerHTML = '';
+          this.nameTarget.appendChild(all_pin)
+          //.then(data => this.nameTarget.appendChild(display_pin(pin)))
+      }
+
+      display_pin(pin) {
+        const image_url = pin["image_url"];
+        const pin_image = `
+          <div class="card" style="width: 18rem;"">
+            <img src='${image_url}' class="card-img-top" width='' height='' style='margin: 0.5em 0;'/>
+          </div>
+        `
+        return pin_image;
       }
     })
 </script>
 <main>
     <div class="container" data-controller="tag">
       <div class="row">
-        <div class="col-5">
+        <div class="col-md-5">
             <div class="px-4 py-3 my-2 text-center">
                 <img class="d-block mx-auto mb-4" src='{{ this_pin["image_url"] }}' width="350" height="auto"/>
                 {% if this_pin["title"] %}
@@ -60,8 +75,8 @@
             </div>
             {% endif %}
         </div>
-        <div class="col-7">
-          <div class="mx-2 my-2" data-tag-target="name">
+        <div class="col-md-7">
+          <div class="mx-4 mt-4" data-tag-target="name">
             <p>Show similar images here</p>
           </div>
         </div>

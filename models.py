@@ -34,8 +34,7 @@ class Pin(Base):
         return {
                 'title': self.title,
                 'image_url': self.image_url,
-                'pin_by': self.pin_by,
-                'pin_detail': self.pin_detail.first(),
+                'pin_by': self.pin_by.username or ''
             }
 
 class Vote(Base):

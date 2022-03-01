@@ -23,8 +23,14 @@ migrate = Migrate(app, db)
 
 @app.route('/')
 def index():
-    print('Request for index page received')
     images = list(reversed(Pin.query.all()))
+    return render_template('index.html', images=images)
+
+@app.route('/search', methods=['POST'])
+def search():
+    from helpers import search_tag
+    keyword = request.form['search']
+    images = search_tag(keyword)
     return render_template('index.html', images=images)
 
 #####  AUTHENTICATION #####
@@ -127,7 +133,7 @@ def post_image():
 @app.route('/pins/<int:pin_id>', methods=['GET'])
 def get_image(pin_id):
     this_pin = Pin.query.get(pin_id)
-    pin_detail = this_pin.to_json()['pin_detail']
+    pin_detail = this_pin.pin_detail.first()
     print(pin_detail)
     return render_template('show.html', this_pin=this_pin, pin_detail=pin_detail)
 
