@@ -7,7 +7,7 @@
             <ul class="nav nav-justified">
                 <li>
                     <form class="d-flex">
-                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                        <input class="form-control" type="search" placeholder="Search" aria-label="Search">
                         <button class="btn btn-outline-success" type="submit">
                             <i class="fa-solid fa-magnifying-glass"></i>
                         </button>
@@ -25,10 +25,9 @@
             {% endif %}
 
             {% if session.get('user') %}
-                <li class="welcome-message">Hey {{ session['user']}}!</li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="menuDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="fa-solid fa-list-ul"></i>
+                        Hey {{ session['user']}}!
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="menuDropdown">
                         <li><a href="#" class="dropdown-item">Profile</a></li>
@@ -37,8 +36,8 @@
                 </li>
 
             {% else %}
-                <li class="navbar-item"><a class="btn btn-info" href="{{ url_for('login') }}">Login</a></li>
-                <li class="navbar-item"><a class="btn btn-primary" href="{{ url_for('signup') }}">Signup</a></li>
+                <li class="navbar-item"><a class="nav-link" href="{{ url_for('login') }}">Login</a></li>
+                <li class="navbar-item"><a class="nav-link" href="{{ url_for('signup') }}">Signup</a></li>
             {% endif %}  
             </ul>
         </div>

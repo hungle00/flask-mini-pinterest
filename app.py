@@ -58,26 +58,29 @@ def signup():
     return render_template('signup.html')
 
 
-@app.route('/login', methods=['POST'])
+@app.route('/login', methods=['GET', 'POST'])
 def login():
-    username = request.form['username']
-    password = request.form['password']
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
 
-    # search the database for the User
-    user = User.query.filter_by(username=username).first()
+        # search the database for the User
+        user = User.query.filter_by(username=username).first()
 
-    if user:
-        password_hash = user.password
+        if user:
+            password_hash = user.password
 
-        if check_password_hash(password_hash, password):
-            # The hash matches the password in the database log the user in
-            session['user'] = username
-            flash('Login was succesfull')
-    else:
-        # user wasn't found in the database
-        flash('Username or password is incorrect please try again', 'error')
+            if check_password_hash(password_hash, password):
+                # The hash matches the password in the database log the user in
+                session['user'] = username
+                flash('Login was succesfull')
+        else:
+            # user wasn't found in the database
+            flash('Username or password is incorrect please try again', 'error')
 
-    return redirect(request.args.get('next') or url_for('index'))
+        return redirect(url_for('index'))
+
+    return render_template('login.html')
 
 
 @app.route('/logout')

@@ -3,25 +3,22 @@
 {% block content %}
 <main>
     <div class="container">
-        <div class="col-7">
-<!--            Add same image content-->
-        </div>
+      <div class="row">
         <div class="col-5">
             <div class="px-4 py-3 my-2 text-center">
                 <img class="d-block mx-auto mb-4" src='{{ this_pin["image_url"] }}' width="350" height="auto"/>
                 <h2 class="display-6 fw-bold">{{ this_pin["title"] }}</h2>
-                <a href="{{ url_for('index') }}" class="btn btn-primary btn-lg px-4 gap-3">Back home</a>
             </div>
             {% if session.get('user') %}
             <form action='/pins/{{ this_pin.id}}' method="POST">
                 <div class="col-md-6 mx-auto text-center">
                     <label for="name" class="form-label fw-bold fs-5">Edit image title</label>
                     <div class="d-grid gap-2 d-sm-flex justify-content-sm-center align-items-center my-1">
-                      <input type="text" class="form-control" name="new_title" placeholder="New Title" />
+                        <input type="text" class="form-control" name="new_title" placeholder="New Title" />
                     </div>
                     <div class="d-grid gap-2 d-sm-flex justify-content-sm-center my-2">
-                        <button type="submit" class="btn btn-primary btn-lg px-4 gap-3">Submit <i class="fa-solid fa-pen"></i></button>
-                        <a href="{{ url_for('index') }}" type="button" class="btn btn-warning btn-lg px-4 gap-3">Cancel</a>
+                        <button type="submit" class="btn btn-primary btn-lg">Submit <i class="fa-solid fa-pen"></i></button>
+                        <a href="{{ url_for('index') }}" type="button" class="btn btn-warning btn-lg">Cancel</a>
                     </div>
                 </div>
             </form>
@@ -30,10 +27,12 @@
             </div>
             {% endif %}
         </div>
-
-
-
+        <div class="col-7">
+          <div class="mx-2 my-2">
+            <p>Show similar images here</p>
+          </div>
+        </div>
+      </div>
     </div>
-
 </main>
 {% endblock %}
