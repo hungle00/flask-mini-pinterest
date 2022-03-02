@@ -9,14 +9,22 @@
       static targets = [ "name" ]
 
       connect() {
-        console.log('hello world')
+        const tag = this.element.querySelector("#first_tag")
+        if(tag) {
+          this.display_pins(tag.innerHTML)
+        }
       }
 
       show(event) {
         const tag = event.target.innerHTML;
+        this.display_pins(tag)
+          //.then(data => this.nameTarget.appendChild(display_pin(pin)))
+      }
+
+      display_pins(tag) {
         const all_pin = document.createElement("div");
         all_pin.classList.add('row');
-        fetch(`http://localhost:5000/api/pins?keyword=${tag}`)
+        fetch(`/api/pins?keyword=${tag}`)
           .then(response => response.json())
           .then(data => data.forEach(pin => {
             console.log(pin["image_url"], pin["pin_by"], pin["title"])  
@@ -24,7 +32,6 @@
           }))
           this.nameTarget.innerHTML = '';
           this.nameTarget.appendChild(all_pin)
-          //.then(data => this.nameTarget.appendChild(display_pin(pin)))
       }
 
       display_pin(pin) {
@@ -54,6 +61,9 @@
                     <h3 class="display-8 fw-bold">{{ pin_detail["caption"] }}</h3>
                 {% endif %}
                 <div class="my-4">
+                  {% if pin_detail %}
+                    <p class="d-none" id="first_tag">{{ pin_detail["tags"][0] }}</p>
+                  {% endif %}
                   {% for tag in pin_detail["tags"] %}
                     <p class="d-inline mx-1 btn btn-sm btn-outline-primary"
                     data-action="click->tag#show">{{ tag }}</p>

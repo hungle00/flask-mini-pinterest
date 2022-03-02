@@ -4,8 +4,8 @@ import config
 
 class BlobStorage:
     connect_str = config.AZURE_STORAGE_CONNECTION_STRING 
-    container_name = "photos" 
-    remote_url = "https://lmh0storage.blob.core.windows.net/"
+    container_name = "pinterest" 
+    remote_url = config.AZURE_STORAGE_REMOTE
     
     def __init__(self):
         self.blob_service_client = BlobServiceClient.from_connection_string(conn_str=self.connect_str) # create a blob service client to interact with the storage account
