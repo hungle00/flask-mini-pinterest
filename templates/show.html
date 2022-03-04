@@ -30,8 +30,8 @@
       display_pin(pin) {
         const image_url = pin["image_url"];
         const pin_image = `
-          <div class="card" style="width: 18rem;"">
-            <img src='${image_url}' class="card-img-top" width='' height='' style='margin: 0.5em 0;'/>
+          <div class="card" style="width: 15rem;"">
+            <img src='${image_url}' class="card-img-top" width='' height=''/>
           </div>
         `
         return pin_image;
@@ -43,7 +43,11 @@
       <div class="row">
         <div class="col-md-5">
             <div class="px-4 py-3 my-2 text-center">
-                <img class="d-block mx-auto mb-4" src='{{ this_pin["image_url"] }}' width="350" height="auto"/>
+                <img class="d-block mx-auto" src='{{ this_pin["image_url"] }}' width="380" height="auto"/>
+                <div class="my-4 text-end">
+                  <a href="#" class="btn btn-light btn-lg px-3 gap-3"><i class="fa-solid fa-heart"></i></a>
+                  <a href="#" class="btn btn-light btn-lg px-3 gap-3"><i class="fa-solid fa-thumbtack"></i></a>
+                </div>
                 {% if this_pin["title"] %}
                     <h3 class="display-8 fw-bold">{{ this_pin["title"] }}</h3>
                 {% else %}

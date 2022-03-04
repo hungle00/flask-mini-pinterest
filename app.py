@@ -134,9 +134,7 @@ def post_image():
 def get_image(pin_id):
     this_pin = Pin.query.get(pin_id)
     pin_detail = this_pin.pin_detail.first()
-    print(pin_detail)
     return render_template('show.html', this_pin=this_pin, pin_detail=pin_detail)
-    # return render_template('show.html', this_pin=this_pin)
 
 
 @app.route('/pins/<int:pin_id>', methods=['POST'])

@@ -1,14 +1,14 @@
 <nav class="navbar navbar-expand-sm navbar-light bg-light" style="position: sticky; top: 0; background-color: #e3f2fd">
     <div class="container">
         <a class="navbar-brand" href="/">
-            <img src="static/images/azure-icon.svg" alt="" width="30" height="24" class="d-inline-block align-text-top"/>
+            <img src="{{ url_for('static', filename='images/azure-icon.svg')}}" alt="" width="30" height="24" class="d-inline-block align-text-top"/>
             <b>Photos App</b>
         </a>
         <div id="navbarNav">
             <ul class="nav nav-justified">
-                <li style="width: 700px">
+                <li id="search">
                     <form class="d-flex" action="{{ url_for('search') }}" method="post">
-                        <input class="form-control" type="search" placeholder="Search" aria-label="Search" name="search">
+                        <input class="form-control border" type="search" placeholder="Search" aria-label="Search" name="search">
                         <button class="btn btn-outline-success" type="submit">
                             <i class="fa-solid fa-magnifying-glass"></i>
                         </button>

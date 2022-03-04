@@ -34,7 +34,7 @@ class Pin(Base):
         return {
                 'title': self.title,
                 'image_url': self.image_url,
-                'pin_by': self.pin_by.username or ''
+                'pin_by': self.pin_by.username if self.pin_by is not None else ''
             }
 
 class Vote(Base):
