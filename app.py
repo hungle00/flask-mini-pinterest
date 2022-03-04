@@ -87,9 +87,13 @@ def login():
                 # The hash matches the password in the database log the user in
                 session['user'] = username
                 flash('Login was succesfull')
+            else:
+                flash('Username or password is incorrect please try again', 'error')
+                return redirect(url_for('login'))
         else:
             # user wasn't found in the database
             flash('Username or password is incorrect please try again', 'error')
+            return redirect(url_for('login'))
 
         return redirect(url_for('index'))
 
@@ -161,9 +165,12 @@ def delete_image(pin_id):
 
 
 # ##### PROFILE #####
-# @app.route('/profile/<int:user_id>')
+# @app.route('/profile/<int:user_id>', methods=['GET', 'POST'])
 # @login_required
-# def show_profile(user_id):
+# def get_profile(user_id):
+#     this_user = User.query.get(user_id)
+#     return redirect(url_for('profile'))
+
 
 ##### UPLOAD PHOTOS  ######
 @app.route("/upload")

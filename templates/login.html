@@ -12,6 +12,15 @@
         <div class="form-group has-success">
           <input type="password" class="form-control" name="password" placeholder="Password" />
         </div>
+        {% with errors = get_flashed_messages(category_filter=["error"]) %}
+        {% if errors %}
+        <div class="alert-message block-message error">
+            {%- for msg in errors %}
+            <h6 style="color: #dc3545"><b>{{ msg }}</b></h6>
+            {% endfor -%}
+        </div>
+        {% endif %}
+        {% endwith %}
         <div class="d-grid gap-2 d-sm-flex justify-content-sm-center my-2">
           <button type="submit" name="submit" class="btn btn-lg btn-success btn-block">Submit</button>
         </div>
