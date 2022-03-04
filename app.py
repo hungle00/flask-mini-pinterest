@@ -70,7 +70,7 @@ def signup():
         session['user'] = username
         flash('Thanks for signing up please login')
 
-        return redirect(url_for('index'))
+        return redirect(url_for('login'))
 
     return render_template('signup.html')
 
@@ -94,6 +94,7 @@ def login():
         else:
             # user wasn't found in the database
             flash('Username or password is incorrect please try again', 'error')
+            return redirect(url_for('login'))
 
         return redirect(url_for('index'))
 
