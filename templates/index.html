@@ -7,7 +7,7 @@
       <div class="container" style="width: auto">
         <a href="{{url_for('get_image', pin_id=image.id)}}"><img src='{{ image["image_url"] }}' class="card-img-top" width='auto' height='300' style='margin: 0.5em 0;'/></a>
         <div>
-          {% if title is not none: %}
+          {% if title is not None: %}
             <a href="{{url_for('get_image', pin_id=image.id)}}" class="btn btn-light"><b><i class="fa-solid fa-image"></i> {{ image['title'] }}</b></a>
           {% else %}
             <a href="{{url_for('get_image', pin_id=image.id)}}" class="btn btn-light"><b><i class="fa-solid fa-image"></i> None</b></a>

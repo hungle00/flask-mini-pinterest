@@ -26,12 +26,14 @@ def index():
     images = list(reversed(Pin.query.all()))
     return render_template('index.html', images=images)
 
+
 @app.route('/search', methods=['POST'])
 def search():
     from helpers import search_tag
     keyword = request.form['search']
     images = search_tag(keyword)
     return render_template('index.html', images=images)
+
 
 #####  AUTHENTICATION #####
 # Login Decorator
@@ -43,10 +45,12 @@ def login_required(f):
         return redirect(url_for('index'))
     return decorated_function
 
+
 def current_user():
     username = session['user']
     user = User.query.filter_by(username=username).first()
     return user
+
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
@@ -173,6 +177,7 @@ def delete_image(pin_id):
 def photos():
     images = blob_storage.get_blob_items()
     return render_template('upload.html', images=images)
+
 
 @app.route("/upload-photos", methods=["POST"])
 @login_required
