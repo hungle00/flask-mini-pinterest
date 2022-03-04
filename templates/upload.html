@@ -2,7 +2,7 @@
 
 {% block content %}
 <div class="container">
-    <div class="card" style="margin: 1em 0; padding: 1em 0 0 0; align-items: center;">
+    <div class="col-md-6 mx-auto text-center" style="margin: 1em 0; padding: 1em 0 0 0; align-items: center;">
         <h3>Upload new File</h3>
         <div class="form-group">
             <form method="post" action="/upload-photos" 
@@ -14,7 +14,7 @@
             </form>
         </div> 
     </div> 
-    <div style='display: flex; justify-content: space-between; flex-wrap: wrap;'>
+    <div style='display: flex; justify-content: space-evenly; flex-wrap: wrap;'>
         {% for image in images %}
             <img src='{{ image }}' width='auto' height='300' style='margin: 0.5em 0;'/>
         {% endfor %}
