@@ -4,23 +4,26 @@
 <div class="container">
   <form class="form-signin" method="post" action="{{ url_for('signup') }}">
     <h2 class="form-signin-heading" align="center">Sign up</h2>
-    <div class="form-group has-success">
-      <label for="email" class="sr-only">Email address</label>
-      <input type="email" id="email" name="email" class="form-control" placeholder="Email address" required autofocus>
+    <div class="col-md-6 mx-auto text-center">
+      <div class="form-group has-success">
+        <label for="email" class="sr-only">Email address</label>
+        <input type="email" id="email" name="email" class="form-control" placeholder="Email address" required autofocus>
+      </div>
+
+      <div class="form-group has-success">
+        <label for="username" class="sr-only">Username</label>
+        <input type="text" id="username" name="username" class="form-control" placeholder="Username" required autofocus>
+      </div>
+
+      <div class="form-group has-success">
+        <label for="password" class="sr-only">Password</label>
+        <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
+      </div>
+      <div class="d-grid gap-2 d-sm-flex justify-content-sm-center my-2">
+        <button class="btn btn-lg btn-success btn-block" type="submit">Sign up</button>
+      </div>
     </div>
 
-    <div class="form-group has-success">
-      <label for="username" class="sr-only">Username</label>
-      <input type="text" id="username" name="username" class="form-control" placeholder="Username" required autofocus>
-    </div>
-
-    <div class="form-group has-success">
-      <label for="password" class="sr-only">Password</label>
-      <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
-    </div>  
-    <div class="d-grid gap-2 d-sm-flex justify-content-sm-center my-2">
-      <button class="btn btn-lg btn-success btn-block" type="submit">Sign up</button>
-    </div>
   </form>
 
 </div> 
