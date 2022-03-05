@@ -1,6 +1,6 @@
 # Mini Pinteret with Flask for Azure Trial Hackathon
 
-* View demo on https://lmh-flask.azurewebsites.net/
+* View demo on https://lmh-pinterest.azurewebsites.net
 
 ### How to setup on local
 ```
@@ -18,11 +18,12 @@ flask run
 ### Azure Services
 - Azure App Service for deployment
 - Azure Blog Service for upload file 
-- Azure Database for PostgreSQL ( database in production ) - *in processing*
-- Computer Vision for Image Analysis, tagging, recommend similar image - *in processing*
+- Azure Database for PostgreSQL ( database in production ) 
+- Computer Vision for Image Analysis, tagging, recommend similar image
 
 ### General functionality
 - Authenticate users (login/signup pages + logout)
 - CRUD Pins
-- Upload images
-- Like/dislike pins
+- Upload images as a pin
+- Search pins by tag
+- Recomendation similar image by tagging

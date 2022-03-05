@@ -165,11 +165,11 @@ def delete_image(pin_id):
 
 
 # ##### PROFILE #####
-# @app.route('/profile/<int:user_id>', methods=['GET', 'POST'])
-# @login_required
-# def get_profile(user_id):
-#     this_user = User.query.get(user_id)
-#     return redirect(url_for('profile'))
+@app.route('/profiles/<username>')
+@login_required
+def profile(username):
+    this_user = User.query.filter_by(username=username).first()
+    return render_template('profile.html', this_user=this_user)
 
 
 ##### UPLOAD PHOTOS  ######

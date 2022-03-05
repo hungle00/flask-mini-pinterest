@@ -31,7 +31,7 @@
                         Hey {{ session['user']}}!
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="menuDropdown">
-                        <li><a href="#" class="dropdown-item">Profile</a></li>
+                        <li><a href="{{ url_for('profile', username=session['user']) }}" class="dropdown-item">Profile</a></li>
                         <li><a href="{{ url_for('logout') }}" class="dropdown-item">Logout</a></li>
                     </ul>
                 </li>
