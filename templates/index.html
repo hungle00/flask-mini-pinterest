@@ -5,7 +5,9 @@
   <div class="mt-4 row" style='display: flex; justify-content: space-evenly; flex-wrap: wrap'>
     {% for image in images %}
       <div class="col-md-3 col-sm-4">
-        <a href="{{url_for('get_image', pin_id=image.id)}}"><img src='{{ image["image_url"] }}' class="card-img-top" height='auto' style='margin: 0.5em 0;'/></a>
+        <a href="{{url_for('get_image', pin_id=image.id)}}">
+          <img src='{{ image["image_url"] }}' class="card-img-top rounded" height='auto'/>
+        </a>
         <div>
           <a href="{{url_for('get_image', pin_id=image.id)}}" class="btn btn-light"><b><i class="fa-solid fa-image"></i> {{ image['title'] }}</b></a>
           <a href="#" class="btn btn-light"><i class="fa-solid fa-thumbtack"></i></a>

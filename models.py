@@ -32,6 +32,7 @@ class Pin(Base):
 
     def to_json(self):
         return {
+                'id': self.id,
                 'title': self.title,
                 'image_url': self.image_url,
                 'pin_by': self.pin_by.username if self.pin_by is not None else ''
@@ -51,7 +52,7 @@ class PinDetail(Base):
     caption = db.Column(db.String(140))
     tags = db.Column(postgresql.ARRAY(db.String))
     pin = db.relationship('Pin', foreign_keys=[pin_id],
-                        backref=db.backref('pin_detail', lazy='dynamic'))
+                        backref=db.backref('pin_detail', lazy='dynamic', cascade="all,delete"))
 
     def __repr__(self):
         return '<PinDetail {}>'.format(self.pin.image_url)

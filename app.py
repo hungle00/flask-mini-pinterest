@@ -152,7 +152,7 @@ def update_image(pin_id):
     except Exception as e:
         print(e)
         return redirect(f'/pins/{pin_id}')
-    return render_template('show.html', this_pin=this_pin)
+    return render_template('show.html', this_pin=this_pin, pin_detail=this_pin.pin_detail.first())
 
 
 @app.route('/delete/<int:pin_id>')
