@@ -20,17 +20,17 @@
     <p class="fw-bold text-primary text-center">
       Or you can
     </p>
-    <div class="card" style="margin: 1em 0; padding: 1em 0 0 0; align-items: center;">
+    <div class="col-md-6 mx-auto text-center">
       <h3>Upload new File</h3>
-      <div class="form-group">
-          <form method="post" action="/upload-photos" 
-              enctype="multipart/form-data">
+      <div class="form-group my-3">
+          <form method="post" action="/upload-photos"  enctype="multipart/form-data">
               <div style="display: flex;">
                   <input type="file" accept=".png, .jpeg, .jpg, .gif" name="photos" multiple class="form-control" style="margin-right: 1em;">
                   <input type="submit" class="btn btn-primary">
               </div>
           </form>
       </div> 
+      <p class="fw-light fst-italic text-warning">It takes a few seconds to upload and analysis image</p>
   </div> 
 </main>
 {% endblock %}

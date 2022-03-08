@@ -169,7 +169,8 @@ def delete_image(pin_id):
 @login_required
 def profile(username):
     this_user = User.query.filter_by(username=username).first()
-    return render_template('profile.html', this_user=this_user)
+    user_pins = this_user.pins.all()
+    return render_template('profile.html', this_user=this_user, images=user_pins)
 
 
 ##### UPLOAD PHOTOS  ######
@@ -186,12 +187,14 @@ def upload_photos():
         try:
             blob_storage.upload_blob(file) # upload the file to the container using the filename as the blob name
             file_url = blob_storage.image_url(file)
-            create_pin('', file_url, current_user())
+            this_pin = create_pin('', file_url, current_user())
+            if this_pin is not None:
+                create_pin_detail(this_pin.id)
         except Exception as e:
             print(e)
             print("Ignoring duplicate filenames")  # ignore duplicate filenames
 
-    return redirect('/upload')
+    return redirect(url_for('index'))
 
 
 if __name__ == '__main__':

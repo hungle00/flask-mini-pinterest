@@ -4,7 +4,7 @@
 <main class="container">
   <div class="mt-4 row" style='display: flex; justify-content: space-evenly; flex-wrap: wrap'>
     {% for image in images %}
-      <div class="col-md-3 col-sm-4">
+      <div class="col-md-3 col-sm-4 my-1">
         <a href="{{url_for('get_image', pin_id=image.id)}}">
           <img src='{{ image["image_url"] }}' class="card-img-top rounded" height='auto'/>
         </a>
